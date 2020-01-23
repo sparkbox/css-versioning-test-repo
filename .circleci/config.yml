@@ -44,6 +44,9 @@ jobs:
       - run: npm run stylelint
 
   deploy:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10.13.0-browsers
     steps:
       - attach_workspace:
           at: ~/repo/workspace/node-build
