@@ -22,6 +22,7 @@
     "stylelint": "stylelint 'src/**/*.scss' --syntax scss",
     "eslint": "eslint src/js",
     "test": "NODE_ENV=test mocha --require @babel/register './src/js/spec-helpers/main.js' './src/**/*-spec.js'",
+    "deploy": "node tasks/deploy.js",
     "node-version": "check-node-version --package"
   },
   "engines": {

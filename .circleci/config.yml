@@ -27,13 +27,37 @@ jobs:
             - node-v1-{{ .Branch }}-
             - node-v1-
 
-      - run: npm ci
+      - run: npm i
 
       - save_cache:
           paths:
             - ~/usr/local/lib/node_modules  # location depends on npm version
           key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - node-build
+
       # run all linting and testing
-      - run: npm run lint
-      - run: npm t
+      - run: npm run eslint
+      - run: npm run stylelint
+
+  deploy:
+    steps:
+      - attach_workspace:
+          at: ~/repo/workspace/node-build
+      - run: npm run deploy -- $CIRCLE_TAG
+
+workflows:
+  version-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              only: master
