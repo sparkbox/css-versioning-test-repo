@@ -34,12 +34,7 @@ jobs:
             - ~/usr/local/lib/node_modules  # location depends on npm version
           key: node-v1-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
-      - persist_to_workspace:
-          root: workspace
-          paths:
-            - node-build
-
-      # run all linting and testing
+     # run all linting and testing
       - run: npm run eslint
       - run: npm run stylelint
 
@@ -48,8 +43,6 @@ jobs:
       # specify the version you desire here
       - image: circleci/node:10.13.0-browsers
     steps:
-      - attach_workspace:
-          at: ~/repo/workspace/node-build
       - run: npm run deploy -- $CIRCLE_TAG
 
 workflows:
